@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <title>Trabalho 3 - LOCADORA DE VEÍCULOS</title>
+    <title>LOCADORA DE VEÍCULOS - PDO</title>
 </head>
 <body>
 <?php
@@ -27,43 +27,52 @@
         <p><b>MÓDULO DE PESQUISA DE AUTOMÓVEL</b></p>
         <a href='automovel.php'><img src='../img/btn_voltar.png'></a>
     <br><br>
-    <table width="60%" border="1" align="center">
-            <tr>
-                <th>CÓDIGO</th>
-                <th>MODELO</th>
-                <th>PLACA</th>
-                <th><img src='../img/excluir.png'></th>
-                <th><img src='../img/editar.png'></th>
-            </tr>
+    
+    <table class="tabela_busca">
+        <tr>
+            <th>CÓDIGO</th>
+            <th>MODELO</th>
+            <th>PLACA</th>
+            <th><img src='../img/excluir.png'></th>
+            <th><img src='../img/editar.png'></th>
+        </tr>
 
-                <?php
-                    $pesquisar = $_POST['pesquisar'];
-                    $query= "select * from veiculo where modelo like '%$pesquisar%' or placa like '%$pesquisar%'";
-                    $result=pg_query($con,$query);
-                        if($result){
-                            while ($row=pg_fetch_assoc($result)){
-                                $codigo=$row['codigo'];
-                                $modelo=$row['modelo'];
-                                $placa=$row['placa'];
-                                    echo "
-                                    <tr>
-                                        <td> $codigo </td>
-                                        <td> $modelo </td>
-                                        <td> $placa </td>
-                                        <td><a href='excluirAuto.php?cod=$codigo'><img src='../img/btn_excluir.png'></a></td>
-                                        <td><a href='editarAuto1.php?cod=$codigo'><img src='../img/btn_editar.png'></a></td>
-                                    </tr>
-                                    ";  
-                            }
-                        }
-                    pg_close($con);
-                ?>
+        <?php
+            $pesquisar = $_POST['pesquisar'];
 
-        </table>
-            <hr>
-                <?php
-                    include '../rodape.php';
-                ?>
+            $sql= "SELECT * FROM veiculo WHERE modelo LIKE ?";
+            $stm = $con->prepare($sql);
+
+            $stm->bindValue(1,"%" . $pesquisar . "%");
+
+            $result=$stm->execute();
+                if($result){
+                    while ($row=$stm->fetch(PDO::FETCH_ASSOC)){
+                        $codigo=$row['codigo'];
+                        $modelo=$row['modelo'];
+                        $placa=$row['placa'];
+                            echo "
+                                <tr>
+                                    <td> $codigo </td>
+                                    <td> $modelo </td>
+                                    <td> $placa </td>
+                                    <td><a href='excluirAuto.php?cod=$codigo'><img src='../img/btn_excluir.png'></a></td>
+                                    <td><a href='editarAuto1.php?cod=$codigo'><img src='../img/btn_editar.png'></a></td>
+                                </tr>
+                                ";  
+                    }
+                }
+                $stm->closeCursor();
+                $stm=NULL;
+                $con=NULL;
+        ?>
+    </table>
+            
+        <hr>
+        <?php
+            include '../rodape.php';
+            pg_close($con);
+        ?>
     </div>
 </body>
 </html>

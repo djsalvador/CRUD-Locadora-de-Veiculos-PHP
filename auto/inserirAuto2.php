@@ -5,9 +5,16 @@
         $modelo=$_POST["modelo"]; 
         $placa=$_POST["placa"];
 
-        $query= "INSERT INTO veiculo (modelo,placa) values ('$modelo','$placa')";
-            pg_query($con, $query);
-            pg_close($con);
-            header("Location: automovel.php");
-            pg_close($con);
+        $sql= "INSERT INTO veiculo (modelo,placa) VALUES (?,?)";
+        $stm = $con->prepare($sql);
+
+        $stm->bindValue(1, $modelo);
+        $stm->bindValue(2, $placa);
+
+        $res = $stm->execute();
+        
+        $stm->closeCursor();
+        $stm=NULL;
+        $con=NULL;
+    header("Location: automovel.php");
 ?>

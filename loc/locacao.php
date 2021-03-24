@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <title>Trabalho 3 - LOCADORA DE VEÍCULOS</title>
+    <title>LOCADORA DE VEÍCULOS - PDO</title>
 </head>
 <body>
 <?php
@@ -25,10 +25,10 @@
         ?>
     <hr>
         <p><b>MÓDULO LOCAÇÃO</b></p>
-        <a href='inserirLoc1.php'><img src='../img/btn_inserir.png'></a>
-        <a href='buscaLoc1.php'><img src='../img/btn_busca.png'></a>
+        <a href='../loc/inserirLoc1.php'><img src='../img/btn_inserir.png'></a>
+        <a href='../loc/buscaLoc1.php'><img src='../img/btn_busca.png'></a>
     <br><br>
-        <table width="90%" border="1" align="center">
+        <table class="tabela">
             <tr>
                 <th>CÓDIGO</th>
                 <th>DATA INÍCIO</th>
@@ -43,10 +43,12 @@
                 <th><img src='../img/editar.png'></th>
             </tr>
         <?php
-            $query='SELECT aluguel.*, cliente.nome as nomecliente, veiculo.modelo as modeloveiculo FROM aluguel JOIN cliente on (aluguel.cliente = cliente.codigo) JOIN veiculo on (aluguel.veiculo = veiculo.codigo) order by codigo';
-            $result=pg_query($con,$query);
+            $sql='SELECT aluguel.*, cliente.nome AS nomecliente, veiculo.modelo AS modeloveiculo FROM aluguel JOIN cliente ON (aluguel.cliente = cliente.codigo) JOIN veiculo ON (aluguel.veiculo = veiculo.codigo) ORDER BY codigo';
+            $stm = $con->prepare($sql);
+
+            $result=$stm->execute();
                 if($result){
-                    while ($row=pg_fetch_assoc($result)){
+                    while ($row=$stm->fetch(PDO::FETCH_ASSOC)){
                         $codigo=$row['codigo'];
                         $datainicio=$row['datainicio'];
                         $datafim=$row['datafim'];
@@ -56,7 +58,7 @@
                         $nomecliente=$row['nomecliente'];
                         $veiculo=$row['veiculo'];
                         $modeloveiculo=$row['modeloveiculo'];
-                        echo "
+                            echo "
                                 <tr>
                                     <td> $codigo </td>
                                     <td> $datainicio </td>
@@ -67,18 +69,21 @@
                                     <td> $nomecliente </td>
                                     <td> $veiculo </td>
                                     <td> $modeloveiculo </td>
-                                    <td><a href='excluirLoc.php?cod=$codigo'><img src='../img/btn_excluir.png'></a></td>
-                                    <td><a href='editarLoc1.php?cod=$codigo'><img src='../img/btn_editar.png'></a></td>
+                                    <td><a href='../loc/excluirLoc.php?cod=$codigo'><img src='../img/btn_excluir.png'></a></td>
+                                    <td><a href='../loc/editarLoc1.php?cod=$codigo'><img src='../img/btn_editar.png'></a></td>
                                 </tr>
                             ";  
                     }
                 }
-            pg_close($con);
+                $stm->closeCursor();
+                $stm=NULL;
+                $con=NULL;
         ?>
         </table>
     <hr>
         <?php
             include '../rodape.php';
+            pg_close($con);
         ?>
     </div>
 </body>

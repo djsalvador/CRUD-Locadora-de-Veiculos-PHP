@@ -5,9 +5,16 @@
         $nome=$_POST["nome"];
         $tel=$_POST["telefone"]; 
 
-        $query= "INSERT INTO cliente (nome,telefone) values ('$nome','$tel')";
-            pg_query($con, $query);
-            pg_close($con);
-            header("Location: cliente.php");
-            pg_close($con);
+        $sql= "INSERT INTO cliente (nome,telefone) VALUES (?,?)";
+        $stm = $con->prepare($sql);
+
+        $stm->bindValue(1,$nome);
+        $stm->bindValue(2,$tel);
+        
+        $res = $stm->execute();
+            
+        $stm->closeCursor();
+        $stm=NULL;
+        $con=NULL;
+    header("Location: cliente.php");
 ?>

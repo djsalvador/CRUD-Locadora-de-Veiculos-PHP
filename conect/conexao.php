@@ -1,26 +1,19 @@
 <?php
     function conexao(){
-        ini_set('display_errors',1);
-        ini_set('display_startup_errors',1);
-        error_reporting(E_ALL);
-        
-        //montar string, separar itens facilita futuras alterações
         $servername = "localhost";
-        $dbname = "locadora";
+        $port = "";
         $username = "postgres";
         $password = "postgres";
-        $port = "";
-        $string="host=$servername dbname=$dbname user=$username password=$password";
-        //echo $string;
-
-        //criar conexão com BD
-        $con = pg_connect($string);
+        $dbname = "locadora";
         
-        // testa se a conexao falhou
-        if (!$con) {
-            print(" ***** FALHA NA CONEXÃO ***** ");
-            exit;
+        try {
+            $con = new PDO("pgsql:host=$servername; dbname=$dbname; user=$username; password=$password");
+        // setar PDO error mode para exception
+            $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                return $con;
         }
-        return $con;
+        catch(PDOException $erro){
+            echo "Falha na Conexao: " . $erro->getMessage();
+        }
     }
 ?>

@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <title>Trabalho 3 - LOCADORA DE VEÍCULOS</title>
+    <title>LOCADORA DE VEÍCULOS - PDO</title>
 </head>
 <body>
     <div class="container" style="text-align: center;"><br>
@@ -21,7 +21,7 @@
     <hr>
         <p><b>MÓDULO DE PESQUISA DE AUTOMÓVEIS</b></p>
         <form method="POST" action="buscaAuto2.php">
-            Pesquisar:<input type="text" name="pesquisar" size="50" placeholder="Modelo ou Placa">
+            Pesquisar:<input type="text" name="pesquisar" size="50" placeholder="Marca ou Modelo do Automóvel">
         <hr>
             <input type="submit" name="submit" value="PESQUISAR">
         </form>

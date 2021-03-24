@@ -38,3 +38,32 @@ nav ul li a:hover {
   width: 90%;
   height: auto;
 }
+
+table{
+    width:99%;
+    border: solid 1px #000;
+}
+
+th{
+    background-color:#a0a0a0;
+    font-weight: bold;
+}
+
+tbody{
+    background-color: #e0e0e0;
+}
+
+th, td, tr{
+    padding: 5px;
+    text-align: center;
+    border: solid 1px #000;
+}
+
+tr:nth-child(even){
+    background-color: #fff;
+}
+
+tr:hover{
+    background-color: cadetblue;
+}
+

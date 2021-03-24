@@ -2,14 +2,21 @@
     include '../conect/conexao.php';
         $con = conexao();
 
-        $codigo = $_POST["cod"];    
         $modelo=$_POST["modelo"];
-        $placa=$_POST["placa"];   
+        $placa=$_POST["placa"];
+        $codigo = $_POST["cod"];
         
-        $query ="UPDATE veiculo SET modelo='$modelo', placa='$placa' WHERE codigo=$codigo";
-            //echo $query;
-            pg_query($con, $query);
-            pg_close($con);
-            header("Location: automovel.php");
-            pg_close($con);
+        $sql ="UPDATE veiculo SET modelo=?, placa=? WHERE codigo=?";
+        $stm = $con->prepare($sql);
+
+        $stm->bindValue(1,$modelo);
+        $stm->bindValue(2,$placa);
+        $stm->bindValue(3,$codigo);
+
+        $res = $stm->execute();
+
+        $stm->closeCursor();
+        $stm=NULL;
+        $con=NULL; 
+    header("Location: automovel.php");
 ?>

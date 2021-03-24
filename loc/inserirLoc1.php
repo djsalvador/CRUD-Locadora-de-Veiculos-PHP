@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <title>Trabalho 3 - LOCADORA DE VEÍCULOS</title>
+    <title>LOCADORA DE VEÍCULOS - PDO</title>
 </head>
 <body>
     <div class="container" style="text-align: center;"><br>
@@ -20,22 +20,25 @@
             include '../conect/conexao.php';
                 $con = conexao();
         ?>
-
-        <br><br>
+    <hr>
         <p><b>MÓDULO INSERIR NOVA LOCAÇÃO</b></p>
 
         <form method="POST" action="inserirLoc2.php">
-            DATA INÍCIO: <input type=text name="datainicio" placeholder="Data de Início"><br>
-            DATA FIM: <input type=text name="datafim" placeholder="Data Fim"><br>
+            DATA INÍCIO: <input type=date name="datainicio" placeholder="Data de Início"><br>
+            DATA FIM: <input type=date name="datafim" placeholder="Data Fim"><br>
             PREÇO: <input type=money_format name="preco" placeholder="Valor da Locação"><br>
-            SITUAÇÃO: <input type=text name="situacao" placeholder="A ou E"><br>
+            SITUAÇÃO: 	<input type="radio" name="situacao" value="A"> ABERTO 
+						<input type="radio" name="situacao" value="E"> ENCERRADO
+					<br> 
             CLIENTE: 
                 <select name="cliente">
                     <?php     
-                        $query='SELECT codigo, nome FROM cliente';
-                        $result=pg_query($con,$query);
+                        $sql='SELECT codigo, nome FROM cliente';
+                        $stm = $con->prepare($sql);
+
+                        $result=$stm->execute();
                             if($result){
-                                while ($row=pg_fetch_assoc($result)) {
+                                while ($row=$stm->fetch(PDO::FETCH_ASSOC)){
                                     $codigo = $row['codigo'];
                                     $nome = $row['nome'];
                                 echo "<option value='$codigo'>$nome</option>";
@@ -46,16 +49,20 @@
             VEÍCULO: 
                 <select name="veiculo">
                     <?php     
-                        $query='SELECT codigo, modelo FROM veiculo';
-                        $result=pg_query($con,$query);
+                        $sql='SELECT codigo, modelo FROM veiculo';
+                        $stm = $con->prepare($sql);
+
+                        $result=$stm->execute();
                             if($result){
-                                while ($row=pg_fetch_assoc($result)) {
+                                while ($row=$stm->fetch(PDO::FETCH_ASSOC)){
                                     $codigo = $row['codigo'];
                                     $modelo = $row['modelo'];
                                 echo "<option value='$codigo'>$modelo</option>";
                                 }
                             }
-                        pg_close($con);
+                            $stm->closeCursor();
+                            $stm=NULL;
+                            $con=NULL;
                     ?>
                 </select><br>
             <hr />
@@ -65,6 +72,7 @@
     <hr>
         <?php
             include '../rodape.php';
+            pg_close($con);
         ?>
     </div>
 </body>

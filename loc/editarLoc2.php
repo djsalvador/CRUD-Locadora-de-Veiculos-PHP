@@ -2,18 +2,24 @@
     include '../conect/conexao.php';
         $con = conexao();
 
-        $codigo = $_POST["cod"];
         $datainicio=$_POST["datainicio"];
         $datafim=$_POST["datafim"];
         $preco=$_POST["preco"];             
         $situacao=$_POST["situacao"];
-        $cliente=$_POST["cliente"];
-        $veiculo=$_POST["veiculo"];
+        $codigo = $_POST["cod"];
 
-        $query="UPDATE aluguel SET datainicio='$datainicio', datafim='$datafim', preco='$preco', situacao='$situacao', cliente='$cliente', veiculo='$veiculo' WHERE codigo=$codigo";
-        //echo $query;
-            pg_query($con, $query);
-            pg_close($con);
-            header("Location: locacao.php");
-            pg_close($con);
+        $sql="UPDATE aluguel SET datainicio=?, datafim=?, preco=?, situacao=? WHERE codigo=?";
+        $stm = $con->prepare($sql);
+        
+        $stm->bindValue(1,$datainicio);
+        $stm->bindValue(2,$datafim);
+        $stm->bindValue(3,$preco);
+        $stm->bindValue(4,$situacao);
+        $stm->bindValue(5,$codigo);
+        
+        $res = $stm->execute();
+        $stm->closeCursor();
+        $stm=NULL;
+        $con=NULL; 
+    header("Location: locacao.php");
 ?>
