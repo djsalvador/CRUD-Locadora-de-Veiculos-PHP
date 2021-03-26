@@ -43,7 +43,7 @@
                 <th><img src='../img/editar.png'></th>
             </tr>
         <?php
-            $sql='SELECT aluguel.*, cliente.nome AS nomecliente, veiculo.modelo AS modeloveiculo FROM aluguel JOIN cliente ON (aluguel.cliente = cliente.codigo) JOIN veiculo ON (aluguel.veiculo = veiculo.codigo) ORDER BY codigo';
+            $sql="SELECT aluguel.*, cliente.nome AS nomecliente, veiculo.modelo AS modeloveiculo FROM aluguel JOIN cliente ON (aluguel.cliente = cliente.codigo) JOIN veiculo ON (aluguel.veiculo = veiculo.codigo) ORDER BY codigo DESC";
             $stm = $con->prepare($sql);
 
             $result=$stm->execute();

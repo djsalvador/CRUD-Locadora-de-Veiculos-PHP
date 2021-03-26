@@ -3,7 +3,7 @@
         $con = conexao();
 
         $datainicio=$_POST["datainicio"];
-        $datafim=$_POST["datafim"];
+        $datafim=$_POST['datafim'];
         $preco=$_POST["preco"];             
         $situacao=$_POST["situacao"];
         $codigo = $_POST["cod"];
