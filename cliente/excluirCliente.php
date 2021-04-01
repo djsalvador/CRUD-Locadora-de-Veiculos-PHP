@@ -19,5 +19,6 @@
         catch(PDOException $erro){
             echo "FALHA EM DELETAR O CLIENTE: <br>" . $erro->getMessage();
             echo "<br><br>NÃO FOI POSSÍVEL REMOVER O USUÁRIO. VERIFIQUE SE HÁ PENDÊNCIAS.";
+            echo "<br> <a href='cliente.php'>VOLTAR</a>";
         }
 ?>

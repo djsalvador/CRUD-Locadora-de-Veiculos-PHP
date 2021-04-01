@@ -52,15 +52,26 @@
         <hr>
             <p><b>MÓDULO EDITAR LOCAÇÃO</b></p>
             <form method="POST" action="editarLoc2.php">
-                    CÓD.CLIENTE: <input type="text" name="cliente" size="4" value="<?php echo $cliente; ?>">
-                    CLIENTE: <input type="text" name="nomecliente" value="<?php echo $nomecliente; ?>"><br>
-                    CÓD.VEÍCULO: <input type="text" name="veiculo" size="4" value="<?php echo $veiculo; ?>">
-                    VEÍCULO: <input type="text" name="modeloveiculo" value="<?php echo $modeloveiculo; ?>"><br><hr>
+                <table class="tabela_editar">
+                    <tr class="tr_editar">
+                        <td>CÓD.CLIENTE: <?php echo $cliente; ?></td>
+                        <td>CLIENTE: <?php echo $nomecliente; ?></td>
+                    </tr>
+                    <tr class="tr_editar">
+                        <td>CÓD.VEÍCULO: <?php echo $veiculo; ?></td>
+                        <td>VEÍCULO: <?php echo $modeloveiculo; ?></td>
+                    </tr>
+                </table>
+                    <hr>
                 <?php echo "<b>ALTERAR: </b>" ?><br>
-                    DATA INÍCIO: <input type="date" name="datainicio" value="<?php echo $datainicio; ?>"><br>
-                    DATA FIM: <input type="date" name="datafim" value="<?php echo $datafim; ?>"><br>
-                    PREÇO: <input type="money_format" name="preco" value="<?php echo $preco; ?>"><br>
-                    SITUAÇÃO: <input type="text" name="situacao" size="2" value="<?php echo $situacao;?>"><br>
+                    SITUAÇÃO: 	
+                        <input type="radio" name="situacao" value="A" <?php echo ($situacao=='A') ? 'checked':null;?>>ABERTO 
+						<input type="radio" name="situacao" value="E" <?php echo ($situacao=='E') ? 'checked':null;?>>ENCERRADO
+					    <br>    
+                    DATA INÍCIO:  <input type="date" name="datainicio" value="<?php echo $datainicio; ?>"><br>
+                    DATA TÉRMINO: <input type="date" name="datafim" value="<?php echo $datafim; ?>"><br>
+                    VALOR TOTAL: <input type="money_format" name="preco" value="<?php echo $preco; ?>"><br>
+                
                 <input type="hidden" name="cod" value="<?php echo $codigo;?>"><br>
                     <hr>
                 <input type="submit" name="submit" value="SALVAR">

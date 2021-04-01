@@ -28,7 +28,7 @@
         <a href='../loc/inserirLoc1.php'><img src='../img/btn_inserir.png'></a>
         <a href='../loc/buscaLoc1.php'><img src='../img/btn_busca.png'></a>
     <br><br>
-        <table class="tabela">
+        <table>
             <tr>
                 <th>CÓDIGO</th>
                 <th>DATA INÍCIO</th>

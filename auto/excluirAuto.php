@@ -19,5 +19,6 @@
         catch(PDOException $erro){
             echo "FALHA EM DELETAR O VEÍCULO: <br>" . $erro->getMessage();
             echo "<br><br>NÃO FOI POSSÍVEL REMOVER O VEÍCULO. VERIFIQUE SE HÁ PENDÊNCIAS.";
+            echo "<br> <a href='automovel.php'>VOLTAR</a>";
         }
 ?>

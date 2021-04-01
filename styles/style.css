@@ -44,6 +44,12 @@ table{
     border: solid 1px #000;
 }
 
+.tabela_editar{
+    width:50%;
+    border: solid 1px #000;
+    margin: 0 auto;
+}
+
 th{
     background-color:#a0a0a0;
     font-weight: bold;
@@ -51,6 +57,12 @@ th{
 
 tbody{
     background-color: #e0e0e0;
+}
+
+.tr_editar{
+    padding: 5px;
+    text-align: center;
+    border: solid 1px #000;
 }
 
 th, td, tr{

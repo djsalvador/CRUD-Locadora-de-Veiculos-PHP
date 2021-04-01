@@ -28,7 +28,7 @@
         <a href='../auto/inserirAuto1.php'><img src='../img/btn_inserir.png'></a>
         <a href='../auto/buscaAuto1.php'><img src='../img/btn_busca.png'></a>
     <br><br>
-        <table class="tabela">
+        <table>
             <tr>
                 <th>CÓDIGO</th>
                 <th>MODELO</th>

@@ -28,7 +28,7 @@
         <a href='../cliente/inserirCliente1.php'><img src='../img/btn_inserir.png'></a>
         <a href='../cliente/buscaCliente1.php'><img src='../img/btn_busca.png'></a>
     <br><br>
-        <table class="tabela">
+        <table>
             <tr>
                 <th>CÓDIGO</th>
                 <th>NOME</th>

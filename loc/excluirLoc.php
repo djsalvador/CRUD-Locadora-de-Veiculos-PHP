@@ -19,5 +19,6 @@
         catch(PDOException $erro){
             echo "FALHA EM DELETAR A LOCAÇÃO: <br>" . $erro->getMessage();
             echo "<br><br>NÃO FOI POSSÍVEL REMOVER A LOCAÇÃO. VERIFIQUE SE HÁ PENDÊNCIAS.";
+            echo "<br> <a href='locacao.php'>VOLTAR</a>";
         }
 ?>
