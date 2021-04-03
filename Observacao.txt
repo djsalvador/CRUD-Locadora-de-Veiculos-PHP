@@ -1,0 +1,23 @@
+
+Observação:
+
+O servidor do site se localiza em "127.0.0.1" ou "localhost" e 
+as pastas do site estão em:
+
+web/trabalhoXX/....
+
+No menu os endereços estão com caminhos relativos direcionando 
+as páginas de acordo com esses endereços.
+
+Exemplos:
+
+Página principal:
+http://127.0.0.1/web/trabalho05/
+ou
+http://localhost/web/trabalho05/
+
+Página clientes
+http://127.0.0.1/web/trabalho05/cliente/cliente.php
+e assim por diante.
+
+D.Salvador
