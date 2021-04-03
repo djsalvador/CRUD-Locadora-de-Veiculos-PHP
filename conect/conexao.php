@@ -13,7 +13,7 @@
                 return $con;
         }
         catch(PDOException $erro){
-            echo "Falha na Conexao: " . $erro->getMessage();
+            echo "FALHA NA CONEXÃO: " . $erro->getMessage();
         }
     }
 ?>

@@ -20,8 +20,8 @@
 
     <div class="container" style="text-align: center;"><br>
         <?php
-            include '../cabecalho.php';
-            include '../menu.php';
+            include '../includes/cabecalho.php';
+            include '../includes/menu.php';
 
             $codigo = $_GET["cod"];
 
@@ -79,7 +79,7 @@
 
         <hr>
         <?php
-            include '../rodape.php';
+            include '../includes/rodape.php';
             pg_close($con);
         ?>
     </div>

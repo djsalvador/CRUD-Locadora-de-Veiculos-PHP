@@ -15,8 +15,8 @@
 <body>
     <div class="container" style="text-align: center;"><br>
         <?php
-            include '../cabecalho.php';
-            include '../menu.php';
+            include '../includes/cabecalho.php';
+            include '../includes/menu.php';
         ?>
 
     <hr>
@@ -32,7 +32,7 @@
     <hr>
 
         <?php
-            include '../rodape.php';
+            include '../includes/rodape.php';
         ?>
     </div>
 </body>
