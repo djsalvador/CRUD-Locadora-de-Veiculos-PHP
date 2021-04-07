@@ -13,9 +13,14 @@
     <title>LOCADORA DE VEÍCULOS - PDO</title>
 </head>
 <body>
-<?php
-        include '../conect/conexao.php';
-            $con = conexao();
+    <?php
+        ini_set('display_errors',1);
+        ini_set('display_startup_errors',1);
+        error_reporting(E_ALL);
+        require_once('../dao/auto.php');
+        $pesquisar = ($_POST['pesquisar']);
+        $autoDAO=new autoDAO();
+        $autos=$autoDAO->busca($pesquisar); 
     ?>
 
     <div class="container" style="text-align: center;"><br>
@@ -36,42 +41,26 @@
             <th><img src='../img/excluir.png'></th>
             <th><img src='../img/editar.png'></th>
         </tr>
-
         <?php
-            $pesquisar = $_POST['pesquisar'];
-
-            $sql= "SELECT * FROM veiculo WHERE modelo LIKE ?";
-            $stm = $con->prepare($sql);
-
-            $stm->bindValue(1,"%" . $pesquisar . "%");
-
-            $result=$stm->execute();
-                if($result){
-                    while ($row=$stm->fetch(PDO::FETCH_ASSOC)){
-                        $codigo=$row['codigo'];
-                        $modelo=$row['modelo'];
-                        $placa=$row['placa'];
-                            echo "
-                                <tr>
-                                    <td> $codigo </td>
-                                    <td> $modelo </td>
-                                    <td> $placa </td>
-                                    <td><a href='excluirAuto.php?cod=$codigo'><img src='../img/btn_excluir.png'></a></td>
-                                    <td><a href='editarAuto1.php?cod=$codigo'><img src='../img/btn_editar.png'></a></td>
-                                </tr>
-                                ";  
-                    }
-                }
-                $stm->closeCursor();
-                $stm=NULL;
-                $con=NULL;
+            foreach ($autos as $veic) {
+                $codigo=$veic->getCod();
+                $modelo=$veic->getModelo();
+                $placa=$veic->getPlaca();
+                    echo "
+                        <tr>
+                            <td> $codigo </td>
+                            <td> $modelo </td>
+                            <td> $placa </td>
+                            <td><a href='excluirAuto.php?cod=$codigo'><img src='../img/btn_excluir.png'></a></td>
+                            <td><a href='editarAuto1.php?cod=$codigo'><img src='../img/btn_editar.png'></a></td>
+                        </tr>
+                        ";  
+            }
         ?>
-    </table>
-            
-        <hr>
+    </table> 
+    <hr>
         <?php
             include '../includes/rodape.php';
-            pg_close($con);
         ?>
     </div>
 </body>

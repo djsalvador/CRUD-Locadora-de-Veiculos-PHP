@@ -1,4 +1,6 @@
 <?php
+
+class DAO{
     function conexao(){
         $servername = "localhost";
         $port = "";
@@ -16,4 +18,6 @@
             echo "FALHA NA CONEXÃO: " . $erro->getMessage();
         }
     }
+}
+
 ?>

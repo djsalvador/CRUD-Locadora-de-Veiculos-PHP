@@ -13,9 +13,13 @@
     <title>LOCADORA DE VEÍCULOS - PDO</title>
 </head>
 <body>
-<?php
-        include '../conect/conexao.php';
-            $con = conexao();
+    <?php
+        ini_set('display_errors',1);
+        ini_set('display_startup_errors',1);
+        error_reporting(E_ALL);
+        require_once('../dao/auto.php');
+        $autoDAO=new autoDAO();
+        $auto=$autoDAO->listaAutos(); 
     ?>
 
     <div class="container" style="text-align: center;"><br>
@@ -36,36 +40,26 @@
                 <th><img src='../img/excluir.png'></th>
                 <th><img src='../img/editar.png'></th>
             </tr>
-        <?php
-            $sql="SELECT * FROM veiculo ORDER BY codigo";
-            $stm = $con->prepare($sql);
-
-            $result=$stm->execute();
-                if($result){
-                    while ($row=$stm->fetch(PDO::FETCH_ASSOC)){
-                        $codigo=$row['codigo'];
-                        $modelo=$row['modelo'];
-                        $placa=$row['placa'];
-                            echo "
-                                <tr>
-                                    <td> $codigo </td>
-                                    <td> $modelo </td>
-                                    <td> $placa </td>
-                                    <td><a href='../auto/excluirAuto.php?cod=$codigo'><img src='../img/btn_excluir.png'></a></td>
-                                    <td><a href='../auto/editarAuto1.php?cod=$codigo'><img src='../img/btn_editar.png'></a></td>
-                                </tr>
-                                ";  
-                    }
+            <?php
+                foreach ($auto as $veic) {
+                    $codigo=$veic->getCod();
+                    $modelo=$veic->getModelo();
+                    $placa=$veic->getPlaca();
+                        echo "
+                            <tr>
+                                <td> $codigo </td>
+                                <td> $modelo </td>
+                                <td> $placa </td>
+                                <td><a href='../auto/excluirAuto.php?cod=$codigo'><img src='../img/btn_excluir.png'></a></td>
+                                <td><a href='../auto/editarAuto1.php?cod=$codigo'><img src='../img/btn_editar.png'></a></td>
+                            </tr>
+                            ";  
                 }
-                $stm->closeCursor();
-                $stm=NULL;
-                $con=NULL;
-        ?>
+            ?>
         </table>
     <hr>
         <?php
             include '../includes/rodape.php';
-            pg_close($con);
         ?>
     </div>
 </body>

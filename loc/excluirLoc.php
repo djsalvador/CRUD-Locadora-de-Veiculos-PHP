@@ -1,24 +1,13 @@
 <?php
-    include '../conect/conexao.php';
-        $con = conexao();
+    ini_set('display_errors',1);
+    ini_set('display_startup_errors',1);
+    error_reporting(E_ALL);
+    require_once('../dao/locacao.php');
 
-    try {
-        $codigo = $_GET["cod"]; 
-
-        $sql="DELETE FROM aluguel WHERE codigo=?";
-        $stm = $con->prepare($sql);    
-        
-        $stm->bindValue(1,$codigo);
-        
-            $res = $stm->execute();
-            $stm->closeCursor();
-            $stm=NULL;
-            $con=NULL; 
-        header("Location: locacao.php");
-        }
-        catch(PDOException $erro){
-            echo "FALHA EM DELETAR A LOCAÇÃO: <br>" . $erro->getMessage();
-            echo "<br><br>NÃO FOI POSSÍVEL REMOVER A LOCAÇÃO. VERIFIQUE SE HÁ PENDÊNCIAS.";
-            echo "<br> <a href='locacao.php'>VOLTAR</a>";
-        }
+    $cod=intval($_GET['cod']);
+    $locacaoDAO=new locacaoDAO();
+    $locacao=$locacaoDAO->localizar($cod);
+    $locacaoDAO->deletar($locacao); 
+    
+    header("Location: locacao.php");    
 ?>

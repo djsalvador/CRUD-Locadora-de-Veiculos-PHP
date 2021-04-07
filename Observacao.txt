@@ -12,16 +12,12 @@ as páginas de acordo com esses endereços.
 Exemplos:
 
 Página principal:
-http://127.0.0.1/web/trabalho05/
+http://127.0.0.1/web/trabalho06/
 ou
-http://localhost/web/trabalho05/
+http://localhost/web/trabalho06/
 
 Página clientes
-http://127.0.0.1/web/trabalho05/cliente/cliente.php
+http://127.0.0.1/web/trabalho06/cliente/cliente.php
 e assim por diante.
-
-Resumindo, para se testar esse código será necessário criar dentro
-do servidor, no localhost, as pastas "web" e dentro dela a pasta 
-"trabalho05" e extrair todos os códigos dentro dela ("trabalho05").
 
 D.Salvador

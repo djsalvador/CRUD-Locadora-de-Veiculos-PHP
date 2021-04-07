@@ -10,12 +10,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <title>LOCADORA DE VEÍCULOS - PDO</title>
+    <title>LOCADORA DE VEÍCULOS - DAO</title>
 </head>
 <body>
     <?php
-        include '../conect/conexao.php';
-            $con = conexao();
+        ini_set('display_errors',1);
+        ini_set('display_startup_errors',1);
+        error_reporting(E_ALL);
+        require_once('../dao/cliente.php');
+        $clienteDAO=new clienteDAO();
+        $clientes=$clienteDAO->listaClientes(); 
     ?>
 
     <div class="container" style="text-align: center;"><br>
@@ -28,44 +32,37 @@
         <a href='../cliente/inserirCliente1.php'><img src='../img/btn_inserir.png'></a>
         <a href='../cliente/buscaCliente1.php'><img src='../img/btn_busca.png'></a>
     <br><br>
-        <table>
-            <tr>
-                <th>CÓDIGO</th>
-                <th>NOME</th>
-                <th>TELEFONE</th>
-                <th><img src='../img/excluir.png'></th>
-                <th><img src='../img/editar.png'></th>
-            </tr>
-        <?php
-            $sql="SELECT * FROM cliente ORDER BY codigo";
-            $stm = $con->prepare($sql);
 
-            $result=$stm->execute();
-                if($result){
-                    while ($row=$stm->fetch(PDO::FETCH_ASSOC)){
-                        $codigo=$row['codigo'];
-                        $nome=$row['nome'];
-                        $tel=$row['telefone'];
-                            echo "
-                                <tr>
-                                    <td> $codigo </td>
-                                    <td> $nome </td>
-                                    <td> $tel </td>
-                                    <td><a href='../cliente/excluirCliente.php?cod=$codigo'><img src='../img/btn_excluir.png'></a></td>
-                                    <td><a href='../cliente/editarCliente1.php?cod=$codigo'><img src='../img/btn_editar.png'></a></td>
-                                </tr>
-                                ";  
-                    }
-                }
-                $stm->closeCursor();
-                $stm=NULL;
-                $con=NULL;
-        ?>
-        </table>
+    <table>
+        <tr>
+            <th>CÓDIGO</th>
+            <th>NOME</th>
+            <th>TELEFONE</th>
+            <th><img src='../img/excluir.png'></th>
+            <th><img src='../img/editar.png'></th>
+        </tr>
+        
+        <?php
+            foreach ($clientes as $cli) {
+                $codigo=$cli->getCod();
+                $nome=$cli->getNome();
+                $tel=$cli->getTelefone();
+                    echo "
+                        <tr>
+                            <td> $codigo </td>
+                            <td> $nome </td>
+                            <td> $tel </td>
+                            <td><a href='../cliente/excluirCliente.php?cod=$codigo'><img src='../img/btn_excluir.png'></a></td>
+                            <td><a href='../cliente/editarCliente1.php?cod=$codigo'><img src='../img/btn_editar.png'></a></td>
+                        </tr>
+                        ";          
+            }
+        ?>   
+    </table>
+    
     <hr>
         <?php
             include '../includes/rodape.php';
-            pg_close($con);
         ?>
     </div>
 </body>

@@ -1,22 +1,17 @@
 <?php
-    include '../conect/conexao.php';
-        $con = conexao();
+    ini_set('display_errors',1);
+    ini_set('display_startup_errors',1);
+    error_reporting(E_ALL);
+    require_once('../dao/auto.php');
+    
+    $cod = intval($_POST['cod']);
+    $modelo= $_POST['modelo'];
+    $placa= $_POST['placa'];
+   
+    $auto = new auto($modelo,$placa);
+    $auto->setCod($cod);
+    $autoDAO = new autoDAO();
+    $autoDAO->editar($auto);
 
-        $modelo=$_POST["modelo"];
-        $placa=$_POST["placa"];
-        $codigo = $_POST["cod"];
-        
-        $sql ="UPDATE veiculo SET modelo=?, placa=? WHERE codigo=?";
-        $stm = $con->prepare($sql);
-
-        $stm->bindValue(1,$modelo);
-        $stm->bindValue(2,$placa);
-        $stm->bindValue(3,$codigo);
-
-        $res = $stm->execute();
-
-        $stm->closeCursor();
-        $stm=NULL;
-        $con=NULL; 
     header("Location: automovel.php");
 ?>

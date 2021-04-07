@@ -15,12 +15,23 @@
 <body>
     <div class="container" style="text-align: center;"><br>
         <?php
+            ini_set('display_errors',1);
+            ini_set('display_startup_errors',1);
+            error_reporting(E_ALL);
+
+            require_once('../dao/cliente.php');
+            $clienteDAO=new clienteDAO();
+            $clientes=$clienteDAO->listaClientes(); 
+
+            require_once('../dao/auto.php');
+            $autoDAO=new autoDAO();
+            $auto=$autoDAO->listaAutos();
+
             include '../includes/cabecalho.php';
             include '../includes/menu.php';
-            include '../conect/conexao.php';
-                $con = conexao();
         ?>
-    <hr>
+        
+        <hr>
         <p><b>MÓDULO INSERIR NOVA LOCAÇÃO</b></p>
 
         <form method="POST" action="inserirLoc2.php">
@@ -32,38 +43,26 @@
 					<br> 
             CLIENTE: 
                 <select name="cliente">
-                    <?php     
-                        $sql='SELECT codigo, nome FROM cliente';
-                        $stm = $con->prepare($sql);
-
-                        $result=$stm->execute();
-                            if($result){
-                                while ($row=$stm->fetch(PDO::FETCH_ASSOC)){
-                                    $codigo = $row['codigo'];
-                                    $nome = $row['nome'];
+                    <option value="">Selecione</option>
+                        <?php 
+                            foreach ($clientes as $cli) {
+                                $codigo=$cli->getCod();
+                                $nome=$cli->getNome();
                                 echo "<option value='$codigo'>$nome</option>";
-                                }
-                            }
-                    ?>
-                </select><br>
+                            } 
+                        ?>
+                </select>
+                <br>
             VEÍCULO: 
                 <select name="veiculo">
-                    <?php     
-                        $sql='SELECT codigo, modelo FROM veiculo';
-                        $stm = $con->prepare($sql);
-
-                        $result=$stm->execute();
-                            if($result){
-                                while ($row=$stm->fetch(PDO::FETCH_ASSOC)){
-                                    $codigo = $row['codigo'];
-                                    $modelo = $row['modelo'];
+                <option value="">Selecione</option>
+                        <?php 
+                            foreach ($auto as $veic) {
+                                $codigo=$veic->getCod();
+                                $modelo=$veic->getModelo();
                                 echo "<option value='$codigo'>$modelo</option>";
-                                }
-                            }
-                            $stm->closeCursor();
-                            $stm=NULL;
-                            $con=NULL;
-                    ?>
+                            } 
+                        ?>
                 </select><br>
             <hr />
             <input type="submit" name="submit" value="INSERIR">
@@ -72,7 +71,6 @@
     <hr>
         <?php
             include '../includes/rodape.php';
-            pg_close($con);
         ?>
     </div>
 </body>

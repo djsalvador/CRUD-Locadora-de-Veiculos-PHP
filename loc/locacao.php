@@ -13,9 +13,13 @@
     <title>LOCADORA DE VEÍCULOS - PDO</title>
 </head>
 <body>
-<?php
-        include '../conect/conexao.php';
-            $con = conexao();
+    <?php
+        ini_set('display_errors',1);
+        ini_set('display_startup_errors',1);
+        error_reporting(E_ALL);
+        require_once('../dao/locacao.php');
+        $locacaoDAO=new locacaoDAO();
+        $locacao=$locacaoDAO->listaLocacao(); 
     ?>
 
     <div class="container" style="text-align: center;"><br>
@@ -23,11 +27,13 @@
             include '../includes/cabecalho.php';
             include '../includes/menu.php';
         ?>
-    <hr>
+
+        <hr>
         <p><b>MÓDULO LOCAÇÃO</b></p>
         <a href='../loc/inserirLoc1.php'><img src='../img/btn_inserir.png'></a>
         <a href='../loc/buscaLoc1.php'><img src='../img/btn_busca.png'></a>
-    <br><br>
+        <br><br>
+
         <table>
             <tr>
                 <th>CÓDIGO</th>
@@ -35,55 +41,41 @@
                 <th>DATA FIM</th>
                 <th>PREÇO</th>
                 <th>SITUAÇÃO</th>
-                <th>CÓD.CLIENTE</th>
                 <th>CLIENTE</th>
-                <th>CÓD.VEÍCULO</th>
                 <th>VEÍCULO</th>
                 <th><img src='../img/excluir.png'></th>
                 <th><img src='../img/editar.png'></th>
             </tr>
-        <?php
-            $sql="SELECT aluguel.*, cliente.nome AS nomecliente, veiculo.modelo AS modeloveiculo FROM aluguel JOIN cliente ON (aluguel.cliente = cliente.codigo) JOIN veiculo ON (aluguel.veiculo = veiculo.codigo) ORDER BY codigo DESC";
-            $stm = $con->prepare($sql);
-
-            $result=$stm->execute();
-                if($result){
-                    while ($row=$stm->fetch(PDO::FETCH_ASSOC)){
-                        $codigo=$row['codigo'];
-                        $datainicio=$row['datainicio'];
-                        $datafim=$row['datafim'];
-                        $preco=$row['preco'];
-                        $situacao=$row['situacao'];
-                        $cliente=$row['cliente'];
-                        $nomecliente=$row['nomecliente'];
-                        $veiculo=$row['veiculo'];
-                        $modeloveiculo=$row['modeloveiculo'];
-                            echo "
-                                <tr>
-                                    <td> $codigo </td>
-                                    <td> $datainicio </td>
-                                    <td> $datafim </td>
-                                    <td> $preco </td>                                    
-                                    <td> $situacao </td>
-                                    <td> $cliente </td>
-                                    <td> $nomecliente </td>
-                                    <td> $veiculo </td>
-                                    <td> $modeloveiculo </td>
-                                    <td><a href='../loc/excluirLoc.php?cod=$codigo'><img src='../img/btn_excluir.png'></a></td>
-                                    <td><a href='../loc/editarLoc1.php?cod=$codigo'><img src='../img/btn_editar.png'></a></td>
-                                </tr>
+            
+            <?php
+                foreach ($locacao as $loc) {
+                    $codigo=$loc->getCod();
+                    $datainicio=$loc->getDataInicio();
+                    $datafim=$loc->getDataFim();
+                    $preco=$loc->getPreco();
+                    $situacao=$loc->getSituacao();
+                    $nomecliente=$loc->getNomeCliente();
+                    $modeloveiculo=$loc->getModeloVeiculo();
+                        echo "
+                            <tr>
+                                <td> $codigo </td>
+                                <td> $datainicio </td>
+                                <td> $datafim </td>
+                                <td> $preco </td>                                    
+                                <td> $situacao </td>
+                                <td> $nomecliente </td>
+                                <td> $modeloveiculo </td>
+                                <td><a href='../loc/excluirLoc.php?cod=$codigo'><img src='../img/btn_excluir.png'></a></td>
+                                <td><a href='../loc/editarLoc1.php?cod=$codigo'><img src='../img/btn_editar.png'></a></td>
+                            </tr>
                             ";  
-                    }
                 }
-                $stm->closeCursor();
-                $stm=NULL;
-                $con=NULL;
-        ?>
+            ?>
         </table>
-    <hr>
+
+        <hr>
         <?php
             include '../includes/rodape.php';
-            pg_close($con);
         ?>
     </div>
 </body>

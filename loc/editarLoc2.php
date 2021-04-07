@@ -1,25 +1,23 @@
 <?php
-    include '../conect/conexao.php';
-        $con = conexao();
+    ini_set('display_errors',1);
+    ini_set('display_startup_errors',1);
+    error_reporting(E_ALL);
+    require_once('../dao/locacao.php');
+    
+    $cod = intval($_POST['cod']);
+    $datainicio= $_POST['datainicio'];
+    $datafim= $_POST['datafim'];
+    $preco= $_POST['preco'];
+    $situacao= $_POST['situacao'];
+    $cliente= $_POST['cliente'];
+    $nomecliente= $_POST['nomecliente'];
+    $veiculo= $_POST['veiculo'];
+    $modeloveiculo= $_POST['modeloveiculo'];
+   
+    $loc = new locacao($datainicio,$datafim,$preco,$situacao,$cliente,$nomecliente,$veiculo,$modeloveiculo);
+    $loc->setCod($cod);
+    $locDAO = new locacaoDAO();
+    $locDAO->editar($loc);
 
-        $datainicio=$_POST["datainicio"];
-        $datafim=$_POST['datafim'];
-        $preco=$_POST["preco"];             
-        $situacao=$_POST["situacao"];
-        $codigo = $_POST["cod"];
-
-        $sql="UPDATE aluguel SET datainicio=?, datafim=?, preco=?, situacao=? WHERE codigo=?";
-        $stm = $con->prepare($sql);
-        
-        $stm->bindValue(1,$datainicio);
-        $stm->bindValue(2,$datafim);
-        $stm->bindValue(3,$preco);
-        $stm->bindValue(4,$situacao);
-        $stm->bindValue(5,$codigo);
-        
-        $res = $stm->execute();
-        $stm->closeCursor();
-        $stm=NULL;
-        $con=NULL; 
     header("Location: locacao.php");
 ?>

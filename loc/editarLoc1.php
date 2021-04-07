@@ -14,73 +14,52 @@
 </head>
 <body>
     <?php
-        include '../conect/conexao.php';
-            $con = conexao();
+        ini_set('display_errors',1);
+        ini_set('display_startup_errors',1);
+        error_reporting(E_ALL);
+        require_once('../dao/locacao.php');
+        $cod = intval($_GET['cod']);
+        $locDAO=new locacaoDAO();
+        $locacao=$locDAO->localizar($cod);
     ?>
 
     <div class="container" style="text-align: center;"><br>
         <?php
             include '../includes/cabecalho.php';
             include '../includes/menu.php';
-
-            $codigo = $_GET["cod"];
-
-            $sql="SELECT aluguel.*, cliente.nome AS nomecliente, veiculo.modelo AS modeloveiculo FROM aluguel INNER JOIN cliente on cliente.codigo=aluguel.cliente INNER JOIN veiculo ON veiculo.codigo=aluguel.veiculo WHERE aluguel.codigo=?;";
-            $stm = $con->prepare($sql); 
-            
-            $stm->bindValue(1,$codigo);
-
-            $result=$stm->execute();
-                if($result){
-                    while ($row=$stm->fetch(PDO::FETCH_ASSOC)){
-                        $codigo=$row['codigo'];
-                        $datainicio=$row['datainicio'];
-                        $datafim=$row['datafim'];
-                        $preco=$row['preco'];
-                        $situacao=$row['situacao'];
-                        $cliente=$row['cliente'];
-                        $nomecliente=$row['nomecliente'];
-                        $veiculo=$row['veiculo'];
-                        $modeloveiculo=$row['modeloveiculo'];
-                    }
-                }
-            $stm->closeCursor();
-            $stm=NULL;
-            $con=NULL; 
         ?>
 
         <hr>
-            <p><b>MÓDULO EDITAR LOCAÇÃO</b></p>
-            <form method="POST" action="editarLoc2.php">
+        <p><b>MÓDULO EDITAR LOCAÇÃO</b></p>
                 <table class="tabela_editar">
                     <tr class="tr_editar">
-                        <td>CÓD.CLIENTE: <?php echo $cliente; ?></td>
-                        <td>CLIENTE: <?php echo $nomecliente; ?></td>
+                        <td>CÓD.CLIENTE: <?php echo $locacao->getCliente();?> </td>
+                        <td>NOME CLIENTE: <?php echo $locacao->getNomeCliente();?> </td>
                     </tr>
                     <tr class="tr_editar">
-                        <td>CÓD.VEÍCULO: <?php echo $veiculo; ?></td>
-                        <td>VEÍCULO: <?php echo $modeloveiculo; ?></td>
+                        <td>CÓD.VEÍCULO: <?php echo $locacao->getVeiculo();?> </td>
+                        <td>MODELO VEÍCULO: <?php echo $locacao->getModeloVeiculo();?> </td>
                     </tr>
                 </table>
+                <hr>
+            
+        <p><b>ALTERAR: </b></p>
+
+            <form method="POST" action="editarLoc2.php">
+                SITUAÇÃO: 	
+                    <input type="radio" name="situacao" value="A" <?php echo ($locacao->getSituacao()=='A') ? 'checked':null; ?>>ABERTO 
+                    <input type="radio" name="situacao" value="E" <?php echo ($locacao->getSituacao()=='E') ? 'checked':null; ?>>ENCERRADO <br>               
+                DATA INÍCIO: <input type="date" name="datainicio" value="<?php echo $locacao->getDataInicio(); ?>"><br>
+                DATA TÉRMINO: <input type="date" name="datafim" value="<?php echo $locacao->getDataFim(); ?>"><br>
+                VALOR TOTAL: <input type="money_format" name="preco" value="<?php echo $locacao->getPreco(); ?>"><br>
+                    <input type="hidden" name="cod" value="<?php echo $locacao->getCod(); ?>"><br>
                     <hr>
-                <?php echo "<b>ALTERAR: </b>" ?><br>
-                    SITUAÇÃO: 	
-                        <input type="radio" name="situacao" value="A" <?php echo ($situacao=='A') ? 'checked':null;?>>ABERTO 
-						<input type="radio" name="situacao" value="E" <?php echo ($situacao=='E') ? 'checked':null;?>>ENCERRADO
-					    <br>    
-                    DATA INÍCIO:  <input type="date" name="datainicio" value="<?php echo $datainicio; ?>"><br>
-                    DATA TÉRMINO: <input type="date" name="datafim" value="<?php echo $datafim; ?>"><br>
-                    VALOR TOTAL: <input type="money_format" name="preco" value="<?php echo $preco; ?>"><br>
-                
-                <input type="hidden" name="cod" value="<?php echo $codigo;?>"><br>
-                    <hr>
-                <input type="submit" name="submit" value="SALVAR">
+                    <input type="submit" name="submit" value="SALVAR">
             </form>
 
         <hr>
         <?php
             include '../includes/rodape.php';
-            pg_close($con);
         ?>
     </div>
 </body>

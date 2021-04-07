@@ -1,28 +1,19 @@
 <?php
-    include '../conect/conexao.php';
-        $con = conexao();
-        
-        $datainicio=$_POST['datainicio'];
-        $datafim=$_POST['datafim'];
-        $preco=$_POST['preco'];             
-        $situacao=$_POST["situacao"];
-        $cliente=$_POST['cliente'];
-        $veiculo=$_POST['veiculo'];
-            
-        $sql="INSERT INTO aluguel (datainicio, datafim, preco, situacao, cliente, veiculo) VALUES (?, ?, ?, ?, ?, ?)";
-        $stm = $con->prepare($sql);
+    ini_set('display_errors',1);
+    ini_set('display_startup_errors',1);
+    error_reporting(E_ALL);
+    require_once('../dao/locacao.php');
 
-        $stm->bindValue(1,$datainicio);
-        $stm->bindValue(2,$datafim);
-        $stm->bindValue(3,$preco);
-        $stm->bindValue(4,$situacao);
-        $stm->bindValue(5,$cliente);
-        $stm->bindValue(6,$veiculo);
+    $datainicio=$_POST['datainicio'];
+    $datafim=$_POST['datafim'];
+    $preco=$_POST['preco'];             
+    $situacao=$_POST['situacao'];
+    $cliente=$_POST['cliente'];
+    $veiculo=$_POST['veiculo'];
 
-        $res = $stm->execute();
-        
-        $stm->closeCursor();
-        $stm=NULL;
-        $con=NULL;
+    $locacaoDAO=new locacaoDAO();
+    $loc = new locacao($datainicio,$datafim,$preco,$situacao,$cliente,$nomecliente,$veiculo,$modeloveiculo);
+    $locacaoDAO->inserir($loc);
+
     header("Location: locacao.php");
 ?>

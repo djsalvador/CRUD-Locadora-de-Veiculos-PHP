@@ -13,48 +13,36 @@
     <title>LOCADORA DE VEÍCULOS - PDO</title>
 </head>
 <body>
-<?php
-        include '../conect/conexao.php';
-            $con = conexao();
+    <?php
+        ini_set('display_errors',1);
+        ini_set('display_startup_errors',1);
+        error_reporting(E_ALL);  
+        require_once('../dao/auto.php');  
+        $cod = intval($_GET['cod']);  
+        $autoDAO=new autoDAO();
+        $veic=$autoDAO->localizar($cod);
     ?>
 
     <div class="container" style="text-align: center;"><br>
         <?php
             include '../includes/cabecalho.php';
             include '../includes/menu.php';
-
-            $codigo = $_GET["cod"];
-            $sql="SELECT * FROM veiculo WHERE codigo=?";
-            $stm = $con->prepare($sql);
-
-            $stm->bindValue(1,$codigo);
-
-            $result = $stm->execute();
-                if($result){
-                    while ($row=$stm->fetch(PDO::FETCH_ASSOC)){
-                        $codigo=$row['codigo'];
-                        $modelo=$row['modelo'];
-                        $placa=$row['placa'];   
-                    }
-                }
-            $stm->closeCursor();
-            $stm=NULL;
-            $con=NULL;
         ?>
+
         <hr>
-            <p><b>MÓDULO EDITAR AUTOMÓVEL</b></p>
+        <p><b>MÓDULO EDITAR AUTOMÓVEL</b></p>
+
             <form method="POST" action="editarAuto2.php">
-                Modelo: <input type=text name="modelo" size="50" value="<?php echo $modelo;?>"><br>
-                Placa: <input type=text name="placa" size="7" value="<?php echo $placa;?>"><br>
-                <input type="hidden" name="cod" value="<?php echo $codigo;?>"><br>
-                <hr />
+                Modelo: <input type=text name="modelo" size="50" value="<?php echo $veic->getModelo();?>"><br>
+                Placa: <input type=text name="placa" size="7" value="<?php echo $veic->getPlaca();?>"><br>
+                <input type="hidden" name="cod" value="<?php echo $veic->getCod();?>"><br>
+                <hr>
                 <input type="submit" name="submit" value="SALVAR">
             </form>
 
         <hr>
         <?php
             include '../includes/rodape.php';
-            pg_close($con);
         ?>
     </div>
 </body>

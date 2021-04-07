@@ -14,8 +14,13 @@
 </head>
 <body>
     <?php
-        include '../conect/conexao.php';
-            $con = conexao();
+        ini_set('display_errors',1);
+        ini_set('display_startup_errors',1);
+        error_reporting(E_ALL);
+        require_once('../dao/locacao.php');
+        $pesquisar = ($_POST['pesquisar']);
+        $locacaoDAO=new locacaoDAO();
+        $locacao=$locacaoDAO->busca($pesquisar); 
     ?>
 
     <div class="container" style="text-align: center;"><br>
@@ -43,56 +48,39 @@
             <th><img src='../img/editar.png'></th>
         </tr>
 
-    <?php
-        $pesquisar = $_POST['pesquisar'];
-
-        $sql="SELECT aluguel.*, cliente.nome AS nomecliente, veiculo.modelo AS modeloveiculo FROM aluguel INNER JOIN cliente ON cliente.codigo=aluguel.cliente INNER JOIN veiculo ON veiculo.codigo=aluguel.veiculo WHERE cliente.nome LIKE ?;";
-
-        $stm = $con->prepare($sql);
-
-        $stm->bindValue(1,"%" . $pesquisar . "%");
-
-        $result=$stm->execute();
-            if($result){
-                while ($row=$stm->fetch(PDO::FETCH_ASSOC)){
-                    $codigo=$row['codigo'];
-                    $datainicio=$row['datainicio'];
-                    $datafim=$row['datafim'];
-                    $preco=$row['preco'];
-                    $situacao=$row['situacao'];
-                    $cliente=$row['cliente'];
-                    $nomecliente=$row['nomecliente'];
-                    $veiculo=$row['veiculo'];
-                    $modeloveiculo=$row['modeloveiculo'];
-                        echo "
-                            <tr>
-                                <td> $codigo </td>
-                                <td> $datainicio </td>
-                                <td> $datafim </td>
-                                <td> $preco </td>                                    
-                                <td> $situacao </td>
-                                <td> $cliente </td>
-                                <td> $nomecliente </td>
-                                <td> $veiculo </td>
-                                <td> $modeloveiculo </td>
-                                <td><a href='excluirLoc.php?cod=$codigo'><img src='../img/btn_excluir.png'></a></td>
-                                <td><a href='editarLoc1.php?cod=$codigo'><img src='../img/btn_editar.png'></a></td>
-                            </tr>
-                            ";  
-                }
-            } else {
-                echo "Nenhuma locação foi encontrada com a palavra '.$pesquisar.' ";
+        <?php
+            foreach ($locacao as $loc) {
+                $codigo=$loc->getCod();
+                $datainicio=$loc->getDataInicio();
+                $datafim=$loc->getDataFim();
+                $preco=$loc->getPreco();
+                $situacao=$loc->getSituacao();
+                $cliente=$loc->getCliente();
+                $nomecliente=$loc->getNomeCliente();
+                $veiculo=$loc->getVeiculo();
+                $modeloveiculo=$loc->getModeloVeiculo();
+                    echo "
+                        <tr>
+                            <td> $codigo </td>
+                            <td> $datainicio </td>
+                            <td> $datafim </td>
+                            <td> $preco </td>                                    
+                            <td> $situacao </td>
+                            <td> $cliente </td>
+                            <td> $nomecliente </td>
+                            <td> $veiculo </td>
+                            <td> $modeloveiculo </td>
+                            <td><a href='excluirLoc.php?cod=$codigo'><img src='../img/btn_excluir.png'></a></td>
+                            <td><a href='editarLoc1.php?cod=$codigo'><img src='../img/btn_editar.png'></a></td>
+                        </tr>
+                        ";  
             }
-            $stm->closeCursor();
-            $stm=NULL;
-            $con=NULL;
-    ?>
+        ?>
     </table>
             
     <hr>
         <?php
             include '../includes/rodape.php';
-            pg_close($con);
         ?>
     </div>
 </body>

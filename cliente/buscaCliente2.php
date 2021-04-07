@@ -10,12 +10,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <title>LOCADORA DE VEÍCULOS - PDO</title>
+    <title>LOCADORA DE VEÍCULOS - DAO</title>
 </head>
 <body>
     <?php
-        include '../conect/conexao.php';
-            $con = conexao();
+        ini_set('display_errors',1);
+        ini_set('display_startup_errors',1);
+        error_reporting(E_ALL);
+        require_once('../dao/cliente.php');
+        $pesquisar = ($_POST['pesquisar']);
+        $clienteDAO=new clienteDAO();
+        $clientes=$clienteDAO->busca($pesquisar); 
     ?>
 
     <div class="container" style="text-align: center;"><br>
@@ -23,34 +28,26 @@
             include '../includes/cabecalho.php';
             include '../includes/menu.php';
         ?>
-    <hr>
+
+        <hr>
         <p><b>MÓDULO DE PESQUISA DE CLIENTES</b></p>
         <a href='cliente.php'><img src='../img/btn_voltar.png'></a>
-    <br><br>
+        <br><br>
 
-    <table class="tabela_busca">
-        <tr>
-            <th>CÓDIGO</th>
-            <th>NOME</th>
-            <th>TELEFONE</th>
-            <th><img src='../img/excluir.png'></th>
-            <th><img src='../img/editar.png'></th>
-        </tr>
+        <table class="tabela_busca">
+            <tr>
+                <th>CÓDIGO</th>
+                <th>NOME</th>
+                <th>TELEFONE</th>
+                <th><img src='../img/excluir.png'></th>
+                <th><img src='../img/editar.png'></th>
+            </tr>
 
-    <?php
-        $pesquisar = $_POST['pesquisar'];
-
-        $sql= "SELECT * FROM cliente WHERE nome LIKE ? ORDER BY codigo";
-        $stm = $con->prepare($sql);
-
-        $stm->bindValue(1,"%" . $pesquisar . "%");
-        
-        $result=$stm->execute();
-             if($result){
-                while ($row=$stm->fetch(PDO::FETCH_ASSOC)){
-                    $codigo=$row['codigo'];
-                    $nome=$row['nome'];
-                    $tel=$row['telefone'];
+            <?php
+                foreach ($clientes as $cli) {
+                    $codigo=$cli->getCod();
+                    $nome=$cli->getNome();
+                    $tel=$cli->getTelefone();
                         echo "
                             <tr>
                                 <td> $codigo </td>
@@ -59,19 +56,14 @@
                                 <td><a href='excluirCliente.php?cod=$codigo'><img src='../img/btn_excluir.png'></a></td>
                                 <td><a href='editarCliente1.php?cod=$codigo'><img src='../img/btn_editar.png'></a></td>
                             </tr>
-                            ";  
+                        ";         
                 }
-            }
-            $stm->closeCursor();
-            $stm=NULL;
-            $con=NULL;
-    ?>
-    </table>
+            ?>
+        </table>
             
         <hr>
         <?php
             include '../includes/rodape.php';
-            pg_close($con);
         ?>
     </div>
 </body>

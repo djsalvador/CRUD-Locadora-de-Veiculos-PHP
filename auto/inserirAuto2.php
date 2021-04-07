@@ -1,20 +1,15 @@
 <?php
-    include '../conect/conexao.php';
-        $con = conexao();
+    ini_set('display_errors',1);
+    ini_set('display_startup_errors',1);
+    error_reporting(E_ALL);
+    require_once('../dao/auto.php');
+    
+    $modelo=$_POST['modelo'];
+    $placa=$_POST['placa'];
+    
+    $autoDAO=new autoDAO();
+    $veic=new auto($modelo,$placa);
+    $autoDAO->inserir($veic);
 
-        $modelo=$_POST["modelo"]; 
-        $placa=$_POST["placa"];
-
-        $sql= "INSERT INTO veiculo (modelo,placa) VALUES (?,?)";
-        $stm = $con->prepare($sql);
-
-        $stm->bindValue(1, $modelo);
-        $stm->bindValue(2, $placa);
-
-        $res = $stm->execute();
-        
-        $stm->closeCursor();
-        $stm=NULL;
-        $con=NULL;
     header("Location: automovel.php");
 ?>

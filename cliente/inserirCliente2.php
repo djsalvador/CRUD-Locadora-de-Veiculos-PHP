@@ -1,20 +1,15 @@
 <?php
-    include '../conect/conexao.php';
-        $con = conexao();
-
-        $nome=$_POST["nome"];
-        $tel=$_POST["telefone"]; 
-
-        $sql= "INSERT INTO cliente (nome,telefone) VALUES (?,?)";
-        $stm = $con->prepare($sql);
-
-        $stm->bindValue(1,$nome);
-        $stm->bindValue(2,$tel);
-        
-        $res = $stm->execute();
-            
-        $stm->closeCursor();
-        $stm=NULL;
-        $con=NULL;
+    ini_set('display_errors',1);
+    ini_set('display_startup_errors',1);
+    error_reporting(E_ALL);
+    require_once('../dao/cliente.php');
+    
+    $nome=$_POST['nome'];
+    $telefone=$_POST['telefone'];
+    
+    $clienteDAO=new clienteDAO();
+    $cli=new cliente($nome,$telefone);
+    $clienteDAO->inserir($cli);
+    
     header("Location: cliente.php");
 ?>

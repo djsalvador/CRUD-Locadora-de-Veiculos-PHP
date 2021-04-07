@@ -15,18 +15,23 @@
 <body>
     <div class="container" style="text-align: center;"><br>
         <?php
+            ini_set('display_errors',1);
+            ini_set('display_startup_errors',1);
+            error_reporting(E_ALL);
             include '../includes/cabecalho.php';
             include '../includes/menu.php';
         ?>
-    <hr>
+        <hr>
         <p><b>MÓDULO DE CADASTRO DE AUTOMÓVEL</b></p>
+
         <form method="POST" action="inserirAuto2.php" ali>
             Modelo: <input type=text name="modelo" size="50" placeholder="Modelo"><br>
             Placa: <input type=text name="placa" size="7" placeholder="XXX0X00"><br>
             <hr>
             <input type="submit" name="submit" value="SALVAR">
         </form>
-    <hr>
+
+        <hr>
         <?php
             include '../includes/rodape.php';
         ?>
