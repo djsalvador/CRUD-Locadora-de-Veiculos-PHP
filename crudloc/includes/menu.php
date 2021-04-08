@@ -17,16 +17,16 @@
     <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/web/trabalho06/index.php">Home</a>
+                <a class="nav-link" href="/crudloc/index.php">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/web/trabalho06/cliente/cliente.php">Clientes</a>
+                <a class="nav-link" href="/crudloc/cliente/cliente.php">Clientes</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/web/trabalho06/auto/automovel.php">Automóveis</a>
+                <a class="nav-link" href="/crudloc/auto/automovel.php">Automóveis</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/web/trabalho06/loc/locacao.php">Locação</a>
+                <a class="nav-link" href="/crudloc/loc/locacao.php">Locação</a>
             </li>
         </ul>
     </div>

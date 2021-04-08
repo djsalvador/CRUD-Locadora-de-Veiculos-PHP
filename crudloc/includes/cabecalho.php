@@ -15,7 +15,7 @@
 <body>
 
     <div style="text-align: left;">
-        <img src="http://127.0.0.1/web/trabalho03/img/banner.png" alt="Banner da Locadora de Veículos">
+        <img src="http://127.0.0.1/crudloc/img/banner.png" alt="Banner da Locadora de Veículos">
     </div>
 
  </body>
